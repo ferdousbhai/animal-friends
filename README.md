@@ -17,7 +17,7 @@ A delightful interactive app for toddlers to "talk" with cute virtual animals!
 
 ## Live Demo
 
-Visit: `https://YOUR-USERNAME.github.io/animal-friends/`
+Visit: https://ferdousbhai.github.io/animal-friends/
 
 ## Add to Home Screen
 
