@@ -171,21 +171,27 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 100;
             background: rgba(255,255,255,0.9);
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            max-width: 95vw;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+        .character-switcher::-webkit-scrollbar { display: none; }
 
         .character-btn {
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
             border-radius: 50%;
             border: 3px solid transparent;
             background: #f0f0f0;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -380,13 +386,15 @@
             .animal-svg { width: 220px; height: 250px; }
             .speech-bubble { font-size: 1.4rem; padding: 12px 20px; }
             .sun { width: 60px; height: 60px; }
-            .character-btn { width: 42px; height: 42px; font-size: 1.5rem; }
+            .character-btn { width: 36px; height: 36px; min-width: 36px; font-size: 1.3rem; }
+            .character-switcher { gap: 5px; padding: 6px 10px; }
         }
 
         @media (min-width: 768px) {
             .animal-svg { width: 350px; height: 400px; }
             .speech-bubble { font-size: 2.2rem; }
-            .character-btn { width: 60px; height: 60px; font-size: 2rem; }
+            .character-btn { width: 55px; height: 55px; min-width: 55px; font-size: 1.8rem; }
+            .character-switcher { gap: 10px; }
         }
     </style>
 </head>
@@ -405,9 +413,14 @@
 
     <div class="character-switcher">
         <button class="character-btn active" data-animal="cat">🐱</button>
-        <button class="character-btn" data-animal="goat">🐐</button>
         <button class="character-btn" data-animal="dog">🐶</button>
         <button class="character-btn" data-animal="cow">🐮</button>
+        <button class="character-btn" data-animal="pig">🐷</button>
+        <button class="character-btn" data-animal="sheep">🐑</button>
+        <button class="character-btn" data-animal="duck">🦆</button>
+        <button class="character-btn" data-animal="horse">🐴</button>
+        <button class="character-btn" data-animal="chicken">🐔</button>
+        <button class="character-btn" data-animal="goat">🐐</button>
     </div>
 
     <div class="container">
@@ -584,6 +597,200 @@
                     <ellipse cx="150" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
                 </g>
             </svg>
+
+            <!-- PIG -->
+            <svg class="animal-svg" id="pig-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <path d="M155 165 Q175 160 180 150 Q185 140 175 135 Q165 130 170 140" stroke="#FFB6C1" stroke-width="8" stroke-linecap="round" fill="none"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="165" rx="60" ry="50" fill="#FFB6C1"/>
+                    <ellipse cx="100" cy="175" rx="40" ry="35" fill="#FFCDD2"/>
+                    <ellipse cx="55" cy="210" rx="18" ry="12" fill="#FFB6C1"/>
+                    <ellipse cx="145" cy="210" rx="18" ry="12" fill="#FFB6C1"/>
+                    <ellipse cx="72" cy="215" rx="14" ry="10" fill="#FFB6C1"/>
+                    <ellipse cx="128" cy="215" rx="14" ry="10" fill="#FFB6C1"/>
+                    <ellipse cx="55" cy="218" rx="10" ry="6" fill="#E91E63"/>
+                    <ellipse cx="72" cy="220" rx="8" ry="5" fill="#E91E63"/>
+                    <ellipse cx="128" cy="220" rx="8" ry="5" fill="#E91E63"/>
+                    <ellipse cx="145" cy="218" rx="10" ry="6" fill="#E91E63"/>
+                </g>
+                <g class="animal-head">
+                    <g class="ear-left"><ellipse cx="50" cy="60" rx="25" ry="20" fill="#FFB6C1" transform="rotate(-20 50 60)"/><ellipse cx="50" cy="60" rx="15" ry="12" fill="#FF8A9A" transform="rotate(-20 50 60)"/></g>
+                    <g class="ear-right"><ellipse cx="150" cy="60" rx="25" ry="20" fill="#FFB6C1" transform="rotate(20 150 60)"/><ellipse cx="150" cy="60" rx="15" ry="12" fill="#FF8A9A" transform="rotate(20 150 60)"/></g>
+                    <ellipse cx="100" cy="90" rx="55" ry="50" fill="#FFB6C1"/>
+                    <ellipse cx="100" cy="115" rx="28" ry="22" fill="#FFCDD2"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="70" cy="80" rx="14" ry="16" fill="white"/><ellipse cx="72" cy="82" rx="9" ry="11" fill="#4A4A4A"/><ellipse cx="74" cy="80" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="76" cy="77" rx="3" ry="3" fill="white"/>
+                        <ellipse cx="130" cy="80" rx="14" ry="16" fill="white"/><ellipse cx="128" cy="82" rx="9" ry="11" fill="#4A4A4A"/><ellipse cx="126" cy="80" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="124" cy="77" rx="3" ry="3" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M56 82 Q70 92 84 82" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M116 82 Q130 92 144 82" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="70" cy="80" rx="15" ry="17" fill="#FFB6C1"/><ellipse cx="130" cy="80" rx="15" ry="17" fill="#FFB6C1"/></g>
+                    <ellipse cx="100" cy="110" rx="22" ry="16" fill="#FF8A9A"/>
+                    <ellipse cx="90" cy="110" rx="5" ry="6" fill="#E91E63"/>
+                    <ellipse cx="110" cy="110" rx="5" ry="6" fill="#E91E63"/>
+                    <path d="M88 128 Q100 136 112 128" stroke="#5D4E37" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="50" cy="100" rx="10" ry="7" fill="#FF8A9A" opacity="0.6"/>
+                    <ellipse cx="150" cy="100" rx="10" ry="7" fill="#FF8A9A" opacity="0.6"/>
+                </g>
+            </svg>
+
+            <!-- SHEEP -->
+            <svg class="animal-svg" id="sheep-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <ellipse cx="160" cy="165" rx="15" ry="12" fill="#F5F5F5"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="165" rx="60" ry="50" fill="#F5F5F5"/>
+                    <ellipse cx="60" cy="150" rx="15" ry="12" fill="#F5F5F5"/>
+                    <ellipse cx="140" cy="150" rx="15" ry="12" fill="#F5F5F5"/>
+                    <ellipse cx="80" cy="140" rx="12" ry="10" fill="#F5F5F5"/>
+                    <ellipse cx="120" cy="140" rx="12" ry="10" fill="#F5F5F5"/>
+                    <ellipse cx="100" cy="145" rx="14" ry="11" fill="#F5F5F5"/>
+                    <ellipse cx="70" cy="180" rx="12" ry="10" fill="#F5F5F5"/>
+                    <ellipse cx="130" cy="180" rx="12" ry="10" fill="#F5F5F5"/>
+                    <rect x="60" y="200" width="12" height="25" rx="4" fill="#2D2D2D"/>
+                    <rect x="80" y="202" width="10" height="23" rx="4" fill="#2D2D2D"/>
+                    <rect x="110" y="202" width="10" height="23" rx="4" fill="#2D2D2D"/>
+                    <rect x="128" y="200" width="12" height="25" rx="4" fill="#2D2D2D"/>
+                </g>
+                <g class="animal-head">
+                    <ellipse cx="100" cy="85" rx="40" ry="38" fill="#F5F5F5"/>
+                    <ellipse cx="70" cy="65" rx="12" ry="10" fill="#F5F5F5"/>
+                    <ellipse cx="130" cy="65" rx="12" ry="10" fill="#F5F5F5"/>
+                    <ellipse cx="85" cy="55" rx="10" ry="8" fill="#F5F5F5"/>
+                    <ellipse cx="115" cy="55" rx="10" ry="8" fill="#F5F5F5"/>
+                    <ellipse cx="100" cy="50" rx="8" ry="7" fill="#F5F5F5"/>
+                    <g class="ear-left"><ellipse cx="50" cy="85" rx="18" ry="10" fill="#2D2D2D" transform="rotate(-15 50 85)"/><ellipse cx="50" cy="85" rx="10" ry="6" fill="#FFB6C1" transform="rotate(-15 50 85)"/></g>
+                    <g class="ear-right"><ellipse cx="150" cy="85" rx="18" ry="10" fill="#2D2D2D" transform="rotate(15 150 85)"/><ellipse cx="150" cy="85" rx="10" ry="6" fill="#FFB6C1" transform="rotate(15 150 85)"/></g>
+                    <ellipse cx="100" cy="95" rx="32" ry="30" fill="#2D2D2D"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="85" cy="90" rx="10" ry="12" fill="white"/><ellipse cx="86" cy="92" rx="6" ry="8" fill="#4A4A4A"/><ellipse cx="88" cy="90" rx="3" ry="4" fill="#1a1a2e"/><ellipse cx="89" cy="88" rx="2" ry="2" fill="white"/>
+                        <ellipse cx="115" cy="90" rx="10" ry="12" fill="white"/><ellipse cx="114" cy="92" rx="6" ry="8" fill="#4A4A4A"/><ellipse cx="112" cy="90" rx="3" ry="4" fill="#1a1a2e"/><ellipse cx="111" cy="88" rx="2" ry="2" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M75 92 Q85 100 95 92" stroke="#F5F5F5" stroke-width="3" stroke-linecap="round" fill="none"/>
+                        <path d="M105 92 Q115 100 125 92" stroke="#F5F5F5" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="85" cy="90" rx="11" ry="13" fill="#2D2D2D"/><ellipse cx="115" cy="90" rx="11" ry="13" fill="#2D2D2D"/></g>
+                    <ellipse cx="100" cy="108" rx="8" ry="6" fill="#4A4A4A"/>
+                    <path d="M90 118 Q100 124 110 118" stroke="#5D4E37" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="70" cy="105" rx="8" ry="5" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="130" cy="105" rx="8" ry="5" fill="#FFB6C1" opacity="0.5"/>
+                </g>
+            </svg>
+
+            <!-- DUCK -->
+            <svg class="animal-svg" id="duck-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <path d="M150 170 L170 160 L165 175 L175 165 L168 180 Z" fill="#FFE082"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="170" rx="55" ry="45" fill="#FFE082"/>
+                    <ellipse cx="100" cy="175" rx="40" ry="32" fill="#FFF8E1"/>
+                    <path d="M60 210 L55 225 L65 220 L60 230 L70 222 L68 228 Z" fill="#FF9800"/>
+                    <path d="M140 210 L135 225 L145 220 L140 230 L150 222 L148 228 Z" fill="#FF9800"/>
+                </g>
+                <g class="animal-head">
+                    <ellipse cx="100" cy="85" rx="45" ry="42" fill="#FFE082"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="75" cy="75" rx="14" ry="16" fill="white"/><ellipse cx="77" cy="77" rx="9" ry="11" fill="#1a1a2e"/><ellipse cx="79" cy="75" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="81" cy="72" rx="3" ry="3" fill="white"/>
+                        <ellipse cx="125" cy="75" rx="14" ry="16" fill="white"/><ellipse cx="123" cy="77" rx="9" ry="11" fill="#1a1a2e"/><ellipse cx="121" cy="75" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="119" cy="72" rx="3" ry="3" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M61 77 Q75 87 89 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M111 77 Q125 87 139 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="75" cy="75" rx="15" ry="17" fill="#FFE082"/><ellipse cx="125" cy="75" rx="15" ry="17" fill="#FFE082"/></g>
+                    <ellipse cx="100" cy="105" rx="25" ry="15" fill="#FF9800"/>
+                    <ellipse cx="100" cy="100" rx="20" ry="10" fill="#FFB74D"/>
+                    <path d="M85 105 L100 115 L115 105" stroke="#E65100" stroke-width="2" fill="none"/>
+                    <ellipse cx="55" cy="90" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="145" cy="90" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="100" cy="45" rx="8" ry="12" fill="#FFE082"/>
+                    <ellipse cx="100" cy="40" rx="5" ry="8" fill="#FFF8E1"/>
+                </g>
+            </svg>
+
+            <!-- HORSE -->
+            <svg class="animal-svg" id="horse-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <path d="M155 165 Q175 175 180 200 Q182 215 175 225" stroke="#4A3728" stroke-width="12" stroke-linecap="round" fill="none"/>
+                    <path d="M175 225 Q165 230 170 235 Q180 232 185 228" stroke="#4A3728" stroke-width="6" stroke-linecap="round" fill="none"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="165" rx="55" ry="45" fill="#8B6914"/>
+                    <ellipse cx="100" cy="175" rx="35" ry="28" fill="#A67C00"/>
+                    <rect x="55" y="190" width="14" height="35" rx="5" fill="#8B6914"/>
+                    <rect x="75" y="195" width="12" height="30" rx="4" fill="#8B6914"/>
+                    <rect x="113" y="195" width="12" height="30" rx="4" fill="#8B6914"/>
+                    <rect x="131" y="190" width="14" height="35" rx="5" fill="#8B6914"/>
+                    <rect x="54" y="220" width="16" height="8" rx="3" fill="#2D2D2D"/>
+                    <rect x="74" y="220" width="14" height="8" rx="3" fill="#2D2D2D"/>
+                    <rect x="112" y="220" width="14" height="8" rx="3" fill="#2D2D2D"/>
+                    <rect x="130" y="220" width="16" height="8" rx="3" fill="#2D2D2D"/>
+                </g>
+                <g class="animal-head">
+                    <path d="M70 45 Q65 25 75 20 Q85 18 90 30" stroke="#4A3728" stroke-width="8" fill="none"/>
+                    <path d="M80 40 Q75 20 85 15 Q95 12 100 25" stroke="#4A3728" stroke-width="6" fill="none"/>
+                    <path d="M90 35 Q88 18 98 15 Q108 14 110 28" stroke="#4A3728" stroke-width="5" fill="none"/>
+                    <g class="ear-left"><path d="M55 65 L45 40 L65 55 Z" fill="#8B6914"/><path d="M57 62 L52 48 L63 57 Z" fill="#A67C00"/></g>
+                    <g class="ear-right"><path d="M145 65 L155 40 L135 55 Z" fill="#8B6914"/><path d="M143 62 L148 48 L137 57 Z" fill="#A67C00"/></g>
+                    <ellipse cx="100" cy="80" rx="50" ry="42" fill="#8B6914"/>
+                    <ellipse cx="100" cy="115" rx="25" ry="25" fill="#A67C00"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="75" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="76" cy="77" rx="8" ry="10" fill="#4A3728"/><ellipse cx="78" cy="75" rx="4" ry="5" fill="#1a1a2e"/><ellipse cx="80" cy="72" rx="2" ry="2" fill="white"/>
+                        <ellipse cx="125" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="124" cy="77" rx="8" ry="10" fill="#4A3728"/><ellipse cx="122" cy="75" rx="4" ry="5" fill="#1a1a2e"/><ellipse cx="120" cy="72" rx="2" ry="2" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M63 77 Q75 87 87 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M113 77 Q125 87 137 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="75" cy="75" rx="13" ry="15" fill="#8B6914"/><ellipse cx="125" cy="75" rx="13" ry="15" fill="#8B6914"/></g>
+                    <ellipse cx="90" cy="118" rx="5" ry="6" fill="#4A3728"/>
+                    <ellipse cx="110" cy="118" rx="5" ry="6" fill="#4A3728"/>
+                    <path d="M85 132 Q100 140 115 132" stroke="#5D4E37" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="50" cy="90" rx="10" ry="7" fill="#FFB6C1" opacity="0.4"/>
+                    <ellipse cx="150" cy="90" rx="10" ry="7" fill="#FFB6C1" opacity="0.4"/>
+                </g>
+            </svg>
+
+            <!-- CHICKEN -->
+            <svg class="animal-svg" id="chicken-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <path d="M150 160 Q170 150 175 140 Q172 155 180 145 Q175 162 185 155 Q178 170 165 175" fill="#FF5722"/>
+                    <path d="M155 165 Q168 158 172 150" stroke="#E64A19" stroke-width="2" fill="none"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="165" rx="50" ry="45" fill="#FFE0B2"/>
+                    <ellipse cx="100" cy="170" rx="35" ry="32" fill="#FFF3E0"/>
+                    <path d="M65 205 L60 225 L70 215 L68 228 Z" fill="#FF9800"/>
+                    <path d="M135 205 L130 225 L140 215 L138 228 Z" fill="#FF9800"/>
+                </g>
+                <g class="animal-head">
+                    <ellipse cx="100" cy="40" rx="12" ry="8" fill="#E53935"/>
+                    <ellipse cx="92" cy="35" rx="8" ry="6" fill="#E53935"/>
+                    <ellipse cx="108" cy="35" rx="8" ry="6" fill="#E53935"/>
+                    <ellipse cx="100" cy="32" rx="6" ry="5" fill="#C62828"/>
+                    <ellipse cx="100" cy="80" rx="42" ry="40" fill="#FFE0B2"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="80" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="82" cy="77" rx="8" ry="10" fill="#4A4A4A"/><ellipse cx="84" cy="75" rx="4" ry="5" fill="#1a1a2e"/><ellipse cx="86" cy="72" rx="2" ry="2" fill="white"/>
+                        <ellipse cx="120" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="118" cy="77" rx="8" ry="10" fill="#4A4A4A"/><ellipse cx="116" cy="75" rx="4" ry="5" fill="#1a1a2e"/><ellipse cx="114" cy="72" rx="2" ry="2" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M68 77 Q80 87 92 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M108 77 Q120 87 132 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="80" cy="75" rx="13" ry="15" fill="#FFE0B2"/><ellipse cx="120" cy="75" rx="13" ry="15" fill="#FFE0B2"/></g>
+                    <path d="M95 95 L100 110 L105 95 Z" fill="#FF9800"/>
+                    <path d="M100 118 Q90 125 85 135 Q90 130 95 132 Q92 138 98 135" fill="#E53935"/>
+                    <ellipse cx="60" cy="90" rx="8" ry="6" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="140" cy="90" rx="8" ry="6" fill="#FFB6C1" opacity="0.5"/>
+                </g>
+            </svg>
         </div>
     </div>
 
@@ -688,6 +895,117 @@
                     gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
                     osc.start(); osc.stop(audioContext.currentTime + dur);
                 }
+            },
+            pig: {
+                oink: () => {
+                    initAudio();
+                    const dur = 0.3;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + 0.1);
+                    osc.frequency.exponentialRampToValueAtTime(180, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                },
+                snort: () => {
+                    initAudio();
+                    const dur = 0.4;
+                    const noise = audioContext.createOscillator(), gain = audioContext.createGain();
+                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
+                    lfo.connect(lfoGain); lfoGain.connect(noise.frequency);
+                    noise.connect(gain); gain.connect(audioContext.destination);
+                    noise.type = 'sawtooth';
+                    noise.frequency.setValueAtTime(100, audioContext.currentTime);
+                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(40, audioContext.currentTime);
+                    lfoGain.gain.setValueAtTime(50, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    noise.start(); lfo.start(); noise.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
+                }
+            },
+            sheep: {
+                baa: () => {
+                    initAudio();
+                    const dur = 0.6;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
+                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.15);
+                    osc.frequency.exponentialRampToValueAtTime(280, audioContext.currentTime + dur);
+                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(25, audioContext.currentTime);
+                    lfoGain.gain.setValueAtTime(30, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.22, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
+                }
+            },
+            duck: {
+                quack: () => {
+                    initAudio();
+                    const dur = 0.2;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(800, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                }
+            },
+            horse: {
+                neigh: () => {
+                    initAudio();
+                    const dur = 0.7;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
+                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.2);
+                    osc.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + dur);
+                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(15, audioContext.currentTime);
+                    lfoGain.gain.setValueAtTime(80, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
+                }
+            },
+            chicken: {
+                cluck: () => {
+                    initAudio();
+                    const dur = 0.15;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                },
+                cockadoodle: () => {
+                    initAudio();
+                    const dur = 0.8;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.2);
+                    osc.frequency.setValueAtTime(700, audioContext.currentTime + 0.4);
+                    osc.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.25, audioContext.currentTime + 0.2);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                }
             }
         };
 
@@ -723,10 +1041,50 @@
                 { text: "*happy moo* 💚", sound: 'moo', animation: 'happy' },
                 { text: "Moo moo! 🥛", sound: 'moo', animation: 'bounce' },
                 { text: "Muuuu! 💕", sound: 'moo', animation: 'happy' },
+            ],
+            pig: [
+                { text: "Oink! 🐷", sound: 'oink', animation: 'bounce' },
+                { text: "Oink oink! 🐖", sound: 'oink', animation: 'bounce' },
+                { text: "*snort snort* 💗", sound: 'snort', animation: 'purr' },
+                { text: "Squeal! 🎀", sound: 'oink', animation: 'happy' },
+                { text: "*happy piggy* 💕", sound: 'snort', animation: 'happy' },
+                { text: "Oink! 🍎", sound: 'oink', animation: 'bounce' },
+            ],
+            sheep: [
+                { text: "Baaaa! 🐑", sound: 'baa', animation: 'bounce' },
+                { text: "Baa baa! 🌿", sound: 'baa', animation: 'bounce' },
+                { text: "*fluffy* 💕", sound: 'baa', animation: 'happy' },
+                { text: "Meeeh! ☁️", sound: 'baa', animation: 'bounce' },
+                { text: "*woolly hug* 💗", sound: 'baa', animation: 'happy' },
+                { text: "Baa! 🧶", sound: 'baa', animation: 'bounce' },
+            ],
+            duck: [
+                { text: "Quack! 🦆", sound: 'quack', animation: 'bounce' },
+                { text: "Quack quack! 💦", sound: 'quack', animation: 'bounce' },
+                { text: "*splish splash* 🌊", sound: 'quack', animation: 'happy' },
+                { text: "Quaaack! 🍞", sound: 'quack', animation: 'bounce' },
+                { text: "*waddle waddle* 💕", sound: 'quack', animation: 'happy' },
+                { text: "Quack! 🪷", sound: 'quack', animation: 'bounce' },
+            ],
+            horse: [
+                { text: "Neigh! 🐴", sound: 'neigh', animation: 'bounce' },
+                { text: "Neighhh! 🌾", sound: 'neigh', animation: 'bounce' },
+                { text: "*gallop gallop* 💨", sound: 'neigh', animation: 'happy' },
+                { text: "Whinny! 🥕", sound: 'neigh', animation: 'bounce' },
+                { text: "*happy horse* 💕", sound: 'neigh', animation: 'happy' },
+                { text: "Neigh! 🏇", sound: 'neigh', animation: 'bounce' },
+            ],
+            chicken: [
+                { text: "Cluck! 🐔", sound: 'cluck', animation: 'bounce' },
+                { text: "Cluck cluck! 🐓", sound: 'cluck', animation: 'bounce' },
+                { text: "Bawk bawk! 🥚", sound: 'cluck', animation: 'happy' },
+                { text: "Cock-a-doodle! 🌅", sound: 'cockadoodle', animation: 'bounce' },
+                { text: "*pecks you* 💕", sound: 'cluck', animation: 'happy' },
+                { text: "Cluck! 🌽", sound: 'cluck', animation: 'bounce' },
             ]
         };
 
-        const printEmojis = { cat: '🐾', goat: '🐐', dog: '🐾', cow: '🐄' };
+        const printEmojis = { cat: '🐾', goat: '🐐', dog: '🐾', cow: '🐄', pig: '🐷', sheep: '🐑', duck: '🦆', horse: '🐴', chicken: '🐔' };
         const heartEmojis = ['💕', '💗', '💖', '❤️', '🧡', '💚'];
 
         let currentAnimal = 'cat', lastResponseIndex = -1, isAnimating = false, hasInteracted = false;
