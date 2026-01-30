@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Animal Friends 🐱🐐</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        :root {
+            --sky-top: #87CEEB;
+            --sky-bottom: #E0F4FF;
+            --grass: #7CB342;
+            --grass-dark: #558B2F;
+            --sun-yellow: #FFD93D;
+            --cloud-white: #FFFFFF;
+            --flower-pink: #FF69B4;
+            --flower-yellow: #FFE066;
+            --flower-purple: #B19CD9;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Baloo 2', cursive;
+            background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 60%, var(--grass) 60%, var(--grass-dark) 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .sun {
+            position: absolute;
+            top: 5%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            background: var(--sun-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 40px var(--sun-yellow), 0 0 80px rgba(255, 217, 61, 0.5);
+            animation: sunPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: var(--cloud-white);
+            border-radius: 50px;
+            opacity: 0.9;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: var(--cloud-white);
+            border-radius: 50%;
+        }
+
+        .cloud-1 {
+            top: 8%;
+            left: 5%;
+            width: 100px;
+            height: 40px;
+            animation: floatCloud 20s linear infinite;
+        }
+
+        .cloud-1::before { width: 50px; height: 50px; top: -25px; left: 15px; }
+        .cloud-1::after { width: 40px; height: 40px; top: -20px; left: 45px; }
+
+        .cloud-2 {
+            top: 15%;
+            left: 60%;
+            width: 80px;
+            height: 30px;
+            animation: floatCloud 25s linear infinite reverse;
+        }
+
+        .cloud-2::before { width: 40px; height: 40px; top: -20px; left: 10px; }
+        .cloud-2::after { width: 35px; height: 35px; top: -15px; left: 35px; }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        .flowers {
+            position: absolute;
+            bottom: 5%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 10%;
+            pointer-events: none;
+        }
+
+        .flower {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: flowerSway 3s ease-in-out infinite;
+        }
+
+        .flower-head {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .flower-head::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--sun-yellow);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .flower-1 .flower-head { background: var(--flower-pink); }
+        .flower-2 .flower-head { background: var(--flower-yellow); }
+        .flower-3 .flower-head { background: var(--flower-purple); }
+        .flower-4 .flower-head { background: var(--flower-pink); }
+        .flower-5 .flower-head { background: var(--flower-yellow); }
+
+        .flower-stem { width: 4px; height: 40px; background: #4CAF50; border-radius: 2px; }
+        .flower:nth-child(2) { animation-delay: 0.5s; }
+        .flower:nth-child(3) { animation-delay: 1s; }
+        .flower:nth-child(4) { animation-delay: 1.5s; }
+        .flower:nth-child(5) { animation-delay: 2s; }
+
+        @keyframes flowerSway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .character-switcher {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .character-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background: #f0f0f0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character-btn:active { transform: scale(0.9); }
+        .character-btn.active {
+            border-color: #FF6B9D;
+            background: #FFF0F5;
+            transform: scale(1.1);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .speech-bubble {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .speech-bubble.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 15px solid transparent;
+            border-top-color: white;
+            border-bottom: 0;
+        }
+
+        .animal-container {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            position: relative;
+        }
+
+        .animal-container:active { transform: scale(0.95); }
+        .animal-container.bounce { animation: animalBounce 0.5s ease; }
+
+        @keyframes animalBounce {
+            0%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-30px); }
+            50% { transform: translateY(-20px); }
+            70% { transform: translateY(-25px); }
+        }
+
+        .animal-svg {
+            width: 280px;
+            height: 320px;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
+            display: none;
+        }
+
+        .animal-svg.active { display: block; }
+
+        .animal-body { transform-origin: center bottom; }
+        .animal-container.purring .animal-body { animation: purr 0.15s ease-in-out infinite; }
+
+        @keyframes purr {
+            0%, 100% { transform: scale(1, 1); }
+            50% { transform: scale(1.02, 0.98); }
+        }
+
+        .animal-tail { transform-origin: 85% 90%; animation: tailWag 2s ease-in-out infinite; }
+        .goat-tail { transform-origin: 80% 20%; animation: goatTailWag 1.5s ease-in-out infinite; }
+
+        @keyframes tailWag {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        @keyframes goatTailWag {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .animal-container.happy .animal-tail,
+        .animal-container.happy .goat-tail { animation: tailWagFast 0.3s ease-in-out infinite; }
+
+        @keyframes tailWagFast {
+            0%, 100% { transform: rotate(-20deg); }
+            50% { transform: rotate(20deg); }
+        }
+
+        .animal-eye-lid { transform-origin: center; transform: scaleY(0); }
+        .animal-container.blinking .animal-eye-lid { animation: blink 0.15s ease-in-out; }
+
+        @keyframes blink {
+            0%, 100% { transform: scaleY(0); }
+            50% { transform: scaleY(1); }
+        }
+
+        .animal-eye-happy { opacity: 0; }
+        .animal-container.happy .animal-eye-happy { opacity: 1; }
+        .animal-container.happy .animal-eye-open { opacity: 0; }
+
+        .ear-left { transform-origin: bottom right; }
+        .ear-right { transform-origin: bottom left; }
+        .animal-container.ears-wiggle .ear-left { animation: earWiggleLeft 0.2s ease-in-out; }
+        .animal-container.ears-wiggle .ear-right { animation: earWiggleRight 0.2s ease-in-out; }
+
+        @keyframes earWiggleLeft {
+            0%, 100% { transform: rotate(0); }
+            50% { transform: rotate(-15deg); }
+        }
+
+        @keyframes earWiggleRight {
+            0%, 100% { transform: rotate(0); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatUp 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(0.5); }
+            100% { opacity: 0; transform: translateY(-150px) scale(1.2); }
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            animation: hintPulse 2s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        }
+
+        .tap-hint.hidden { display: none; }
+
+        .print {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: printAppear 1s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes printAppear {
+            0% { opacity: 1; transform: scale(0) rotate(-20deg); }
+            20% { transform: scale(1.2) rotate(0deg); }
+            100% { opacity: 0; transform: scale(1) rotate(10deg); }
+        }
+
+        @media (max-width: 400px) {
+            .animal-svg { width: 220px; height: 250px; }
+            .speech-bubble { font-size: 1.4rem; padding: 12px 20px; }
+            .sun { width: 60px; height: 60px; }
+            .character-btn { width: 42px; height: 42px; font-size: 1.5rem; }
+        }
+
+        @media (min-width: 768px) {
+            .animal-svg { width: 350px; height: 400px; }
+            .speech-bubble { font-size: 2.2rem; }
+            .character-btn { width: 60px; height: 60px; font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sun"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    
+    <div class="flowers">
+        <div class="flower flower-1"><div class="flower-head"></div><div class="flower-stem"></div></div>
+        <div class="flower flower-2"><div class="flower-head"></div><div class="flower-stem"></div></div>
+        <div class="flower flower-3"><div class="flower-head"></div><div class="flower-stem"></div></div>
+        <div class="flower flower-4"><div class="flower-head"></div><div class="flower-stem"></div></div>
+        <div class="flower flower-5"><div class="flower-head"></div><div class="flower-stem"></div></div>
+    </div>
+
+    <div class="character-switcher">
+        <button class="character-btn active" data-animal="cat">🐱</button>
+        <button class="character-btn" data-animal="goat">🐐</button>
+        <button class="character-btn" data-animal="dog">🐶</button>
+        <button class="character-btn" data-animal="cow">🐮</button>
+    </div>
+
+    <div class="container">
+        <div class="speech-bubble" id="speechBubble">Meow! 🐱</div>
+        
+        <div class="animal-container" id="animalContainer">
+            <div class="hearts-container" id="heartsContainer"></div>
+            
+            <!-- CAT -->
+            <svg class="animal-svg active" id="cat-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <path d="M160 180 Q200 160 195 120 Q192 100 180 95" stroke="#FF9F43" stroke-width="18" stroke-linecap="round" fill="none"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="175" rx="60" ry="50" fill="#FF9F43"/>
+                    <ellipse cx="100" cy="180" rx="40" ry="35" fill="#FFF5E6"/>
+                    <ellipse cx="55" cy="210" rx="20" ry="12" fill="#FF9F43"/>
+                    <ellipse cx="145" cy="210" rx="20" ry="12" fill="#FF9F43"/>
+                    <ellipse cx="70" cy="215" rx="15" ry="10" fill="#FF9F43"/>
+                    <ellipse cx="130" cy="215" rx="15" ry="10" fill="#FF9F43"/>
+                    <ellipse cx="70" cy="218" rx="8" ry="5" fill="#FFB6C1"/>
+                    <ellipse cx="130" cy="218" rx="8" ry="5" fill="#FFB6C1"/>
+                </g>
+                <g class="animal-head">
+                    <g class="ear-left"><path d="M45 70 L30 20 L70 50 Z" fill="#FF9F43"/><path d="M48 65 L38 30 L65 52 Z" fill="#FFB6C1"/></g>
+                    <g class="ear-right"><path d="M155 70 L170 20 L130 50 Z" fill="#FF9F43"/><path d="M152 65 L162 30 L135 52 Z" fill="#FFB6C1"/></g>
+                    <ellipse cx="100" cy="85" rx="55" ry="50" fill="#FF9F43"/>
+                    <ellipse cx="100" cy="95" rx="35" ry="30" fill="#FFF5E6"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="75" cy="80" rx="15" ry="18" fill="white"/><ellipse cx="77" cy="82" rx="10" ry="12" fill="#2ECC71"/><ellipse cx="79" cy="80" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="81" cy="77" rx="3" ry="3" fill="white"/>
+                        <ellipse cx="125" cy="80" rx="15" ry="18" fill="white"/><ellipse cx="123" cy="82" rx="10" ry="12" fill="#2ECC71"/><ellipse cx="121" cy="80" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="119" cy="77" rx="3" ry="3" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M60 80 Q75 90 90 80" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M110 80 Q125 90 140 80" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="75" cy="80" rx="16" ry="19" fill="#FF9F43"/><ellipse cx="125" cy="80" rx="16" ry="19" fill="#FF9F43"/></g>
+                    <path d="M95 98 L100 105 L105 98 Z" fill="#FF6B9D"/>
+                    <path d="M100 105 L100 112" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M92 115 Q100 120 108 115" stroke="#5D4E37" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <g stroke="#5D4E37" stroke-width="2" stroke-linecap="round">
+                        <line x1="30" y1="90" x2="60" y2="95"/><line x1="28" y1="100" x2="58" y2="100"/><line x1="30" y1="110" x2="60" y2="105"/>
+                        <line x1="170" y1="90" x2="140" y2="95"/><line x1="172" y1="100" x2="142" y2="100"/><line x1="170" y1="110" x2="140" y2="105"/>
+                    </g>
+                    <ellipse cx="55" cy="100" rx="12" ry="8" fill="#FFB6C1" opacity="0.6"/>
+                    <ellipse cx="145" cy="100" rx="12" ry="8" fill="#FFB6C1" opacity="0.6"/>
+                </g>
+            </svg>
+
+            <!-- GOAT -->
+            <svg class="animal-svg" id="goat-svg" viewBox="0 0 200 230" fill="none">
+                <g class="goat-tail"><path d="M155 155 Q170 145 168 130" stroke="#E8DDD4" stroke-width="12" stroke-linecap="round" fill="none"/></g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="165" rx="55" ry="45" fill="#F5F0EB"/>
+                    <ellipse cx="100" cy="175" rx="35" ry="28" fill="#FFFFFF"/>
+                    <rect x="55" y="190" width="14" height="35" rx="5" fill="#E8DDD4"/>
+                    <rect x="75" y="195" width="14" height="30" rx="5" fill="#E8DDD4"/>
+                    <rect x="110" y="195" width="14" height="30" rx="5" fill="#E8DDD4"/>
+                    <rect x="130" y="190" width="14" height="35" rx="5" fill="#E8DDD4"/>
+                    <rect x="54" y="220" width="16" height="8" rx="3" fill="#4A4A4A"/>
+                    <rect x="74" y="220" width="16" height="8" rx="3" fill="#4A4A4A"/>
+                    <rect x="109" y="220" width="16" height="8" rx="3" fill="#4A4A4A"/>
+                    <rect x="129" y="220" width="16" height="8" rx="3" fill="#4A4A4A"/>
+                </g>
+                <g class="animal-head">
+                    <path d="M60 55 Q45 35 50 15" stroke="#C4A77D" stroke-width="8" stroke-linecap="round" fill="none"/>
+                    <path d="M140 55 Q155 35 150 15" stroke="#C4A77D" stroke-width="8" stroke-linecap="round" fill="none"/>
+                    <g class="ear-left"><ellipse cx="45" cy="75" rx="20" ry="10" fill="#F5F0EB" transform="rotate(-30 45 75)"/><ellipse cx="45" cy="75" rx="12" ry="6" fill="#FFB6C1" transform="rotate(-30 45 75)"/></g>
+                    <g class="ear-right"><ellipse cx="155" cy="75" rx="20" ry="10" fill="#F5F0EB" transform="rotate(30 155 75)"/><ellipse cx="155" cy="75" rx="12" ry="6" fill="#FFB6C1" transform="rotate(30 155 75)"/></g>
+                    <ellipse cx="100" cy="85" rx="50" ry="45" fill="#F5F0EB"/>
+                    <ellipse cx="100" cy="105" rx="25" ry="22" fill="#FFFFFF"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="75" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="76" cy="77" rx="8" ry="10" fill="#8B7355"/><rect x="73" y="73" width="8" height="5" rx="1" fill="#1a1a2e"/><ellipse cx="79" cy="73" rx="2" ry="2" fill="white"/>
+                        <ellipse cx="125" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="124" cy="77" rx="8" ry="10" fill="#8B7355"/><rect x="119" y="73" width="8" height="5" rx="1" fill="#1a1a2e"/><ellipse cx="121" cy="73" rx="2" ry="2" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M63 77 Q75 87 87 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M113 77 Q125 87 137 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="75" cy="75" rx="13" ry="15" fill="#F5F0EB"/><ellipse cx="125" cy="75" rx="13" ry="15" fill="#F5F0EB"/></g>
+                    <ellipse cx="100" cy="108" rx="12" ry="8" fill="#FFB6C1"/>
+                    <ellipse cx="95" cy="108" rx="3" ry="4" fill="#E89AAA"/>
+                    <ellipse cx="105" cy="108" rx="3" ry="4" fill="#E89AAA"/>
+                    <path d="M90 118 Q100 125 110 118" stroke="#5D4E37" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <path d="M95 125 Q90 145 85 155" stroke="#E8DDD4" stroke-width="6" stroke-linecap="round" fill="none"/>
+                    <path d="M100 125 Q100 150 100 160" stroke="#E8DDD4" stroke-width="6" stroke-linecap="round" fill="none"/>
+                    <path d="M105 125 Q110 145 115 155" stroke="#E8DDD4" stroke-width="6" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="55" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="145" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                </g>
+            </svg>
+
+            <!-- DOG -->
+            <svg class="animal-svg" id="dog-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail"><path d="M155 165 Q185 145 190 115 Q192 100 185 95" stroke="#C4894D" stroke-width="16" stroke-linecap="round" fill="none"/></g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="170" rx="58" ry="48" fill="#D4A066"/>
+                    <ellipse cx="100" cy="178" rx="38" ry="32" fill="#F5E6D3"/>
+                    <ellipse cx="55" cy="210" rx="18" ry="14" fill="#D4A066"/>
+                    <ellipse cx="145" cy="210" rx="18" ry="14" fill="#D4A066"/>
+                    <ellipse cx="72" cy="215" rx="14" ry="10" fill="#D4A066"/>
+                    <ellipse cx="128" cy="215" rx="14" ry="10" fill="#D4A066"/>
+                    <ellipse cx="72" cy="218" rx="8" ry="5" fill="#4A4A4A"/>
+                    <ellipse cx="128" cy="218" rx="8" ry="5" fill="#4A4A4A"/>
+                </g>
+                <g class="animal-head">
+                    <g class="ear-left"><ellipse cx="45" cy="85" rx="22" ry="35" fill="#C4894D"/><ellipse cx="48" cy="90" rx="12" ry="20" fill="#E8C4A0"/></g>
+                    <g class="ear-right"><ellipse cx="155" cy="85" rx="22" ry="35" fill="#C4894D"/><ellipse cx="152" cy="90" rx="12" ry="20" fill="#E8C4A0"/></g>
+                    <ellipse cx="100" cy="80" rx="52" ry="48" fill="#D4A066"/>
+                    <ellipse cx="100" cy="90" rx="30" ry="28" fill="#F5E6D3"/>
+                    <ellipse cx="100" cy="105" rx="22" ry="18" fill="#F5E6D3"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="75" cy="75" rx="14" ry="16" fill="white"/><ellipse cx="77" cy="77" rx="9" ry="11" fill="#5D3A1A"/><ellipse cx="79" cy="75" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="81" cy="72" rx="3" ry="3" fill="white"/>
+                        <ellipse cx="125" cy="75" rx="14" ry="16" fill="white"/><ellipse cx="123" cy="77" rx="9" ry="11" fill="#5D3A1A"/><ellipse cx="121" cy="75" rx="5" ry="6" fill="#1a1a2e"/><ellipse cx="119" cy="72" rx="3" ry="3" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M61 77 Q75 87 89 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M111 77 Q125 87 139 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="75" cy="75" rx="15" ry="17" fill="#D4A066"/><ellipse cx="125" cy="75" rx="15" ry="17" fill="#D4A066"/></g>
+                    <ellipse cx="100" cy="100" rx="12" ry="10" fill="#1a1a2e"/>
+                    <ellipse cx="97" cy="98" rx="4" ry="3" fill="#4a4a4a"/>
+                    <path d="M100 110 L100 118" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M88 120 Q100 128 112 120" stroke="#5D4E37" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="100" cy="125" rx="8" ry="10" fill="#FF6B9D"/>
+                    <ellipse cx="52" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="148" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                </g>
+            </svg>
+
+            <!-- COW -->
+            <svg class="animal-svg" id="cow-svg" viewBox="0 0 200 230" fill="none">
+                <g class="animal-tail">
+                    <path d="M155 160 Q180 150 182 120" stroke="#F5F5F5" stroke-width="8" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="182" cy="115" rx="8" ry="10" fill="#4A4A4A"/>
+                </g>
+                <g class="animal-body">
+                    <ellipse cx="100" cy="165" rx="60" ry="50" fill="#F5F5F5"/>
+                    <ellipse cx="75" cy="155" rx="18" ry="15" fill="#4A4A4A"/>
+                    <ellipse cx="120" cy="175" rx="20" ry="16" fill="#4A4A4A"/>
+                    <ellipse cx="90" cy="185" rx="12" ry="10" fill="#4A4A4A"/>
+                    <ellipse cx="100" cy="180" rx="35" ry="25" fill="#FFE4E1"/>
+                    <rect x="50" y="195" width="16" height="30" rx="6" fill="#F5F5F5"/>
+                    <rect x="72" y="198" width="14" height="27" rx="5" fill="#F5F5F5"/>
+                    <rect x="114" y="198" width="14" height="27" rx="5" fill="#F5F5F5"/>
+                    <rect x="134" y="195" width="16" height="30" rx="6" fill="#F5F5F5"/>
+                    <rect x="49" y="220" width="18" height="8" rx="3" fill="#4A4A4A"/>
+                    <rect x="71" y="220" width="16" height="8" rx="3" fill="#4A4A4A"/>
+                    <rect x="113" y="220" width="16" height="8" rx="3" fill="#4A4A4A"/>
+                    <rect x="133" y="220" width="18" height="8" rx="3" fill="#4A4A4A"/>
+                </g>
+                <g class="animal-head">
+                    <path d="M55 55 Q40 45 35 30" stroke="#F5DEB3" stroke-width="10" stroke-linecap="round" fill="none"/>
+                    <path d="M145 55 Q160 45 165 30" stroke="#F5DEB3" stroke-width="10" stroke-linecap="round" fill="none"/>
+                    <g class="ear-left"><ellipse cx="40" cy="75" rx="18" ry="12" fill="#F5F5F5" transform="rotate(-20 40 75)"/><ellipse cx="40" cy="75" rx="10" ry="7" fill="#FFB6C1" transform="rotate(-20 40 75)"/></g>
+                    <g class="ear-right"><ellipse cx="160" cy="75" rx="18" ry="12" fill="#F5F5F5" transform="rotate(20 160 75)"/><ellipse cx="160" cy="75" rx="10" ry="7" fill="#FFB6C1" transform="rotate(20 160 75)"/></g>
+                    <ellipse cx="100" cy="80" rx="50" ry="45" fill="#F5F5F5"/>
+                    <ellipse cx="70" cy="65" rx="15" ry="12" fill="#4A4A4A"/>
+                    <ellipse cx="130" cy="70" rx="12" ry="10" fill="#4A4A4A"/>
+                    <ellipse cx="100" cy="108" rx="30" ry="22" fill="#FFE4E1"/>
+                    <g class="animal-eye-open">
+                        <ellipse cx="75" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="76" cy="77" rx="8" ry="10" fill="#5D3A1A"/><ellipse cx="78" cy="75" rx="4" ry="5" fill="#1a1a2e"/><ellipse cx="80" cy="72" rx="2" ry="2" fill="white"/>
+                        <ellipse cx="125" cy="75" rx="12" ry="14" fill="white"/><ellipse cx="124" cy="77" rx="8" ry="10" fill="#5D3A1A"/><ellipse cx="122" cy="75" rx="4" ry="5" fill="#1a1a2e"/><ellipse cx="120" cy="72" rx="2" ry="2" fill="white"/>
+                    </g>
+                    <g class="animal-eye-happy">
+                        <path d="M63 77 Q75 87 87 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M113 77 Q125 87 137 77" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </g>
+                    <g class="animal-eye-lid"><ellipse cx="75" cy="75" rx="13" ry="15" fill="#F5F5F5"/><ellipse cx="125" cy="75" rx="13" ry="15" fill="#F5F5F5"/></g>
+                    <ellipse cx="88" cy="108" rx="6" ry="8" fill="#4A4A4A"/>
+                    <ellipse cx="112" cy="108" rx="6" ry="8" fill="#4A4A4A"/>
+                    <path d="M85 120 Q100 128 115 120" stroke="#5D4E37" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <ellipse cx="50" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                    <ellipse cx="150" cy="95" rx="10" ry="7" fill="#FFB6C1" opacity="0.5"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="tap-hint" id="tapHint">👆 Tap the animal!</div>
+
+    <script>
+        let audioContext;
+        function initAudio() {
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === 'suspended') audioContext.resume();
+        }
+
+        const sounds = {
+            cat: {
+                meow: () => {
+                    initAudio();
+                    const dur = 0.3 + Math.random() * 0.2, freq = 600 + Math.random() * 200;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, audioContext.currentTime + dur * 0.3);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 0.8, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                },
+                purr: () => {
+                    initAudio();
+                    const dur = 0.8;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
+                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(80, audioContext.currentTime);
+                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(25, audioContext.currentTime);
+                    lfoGain.gain.setValueAtTime(20, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
+                }
+            },
+            goat: {
+                bleat: () => {
+                    initAudio();
+                    const dur = 0.5;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
+                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(350, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.1);
+                    osc.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + dur);
+                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(30, audioContext.currentTime);
+                    lfoGain.gain.setValueAtTime(40, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
+                }
+            },
+            dog: {
+                bark: () => {
+                    initAudio();
+                    const dur = 0.25;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(200, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + 0.05);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                },
+                woof: () => {
+                    initAudio();
+                    const dur = 0.4;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                }
+            },
+            cow: {
+                moo: () => {
+                    initAudio();
+                    const dur = 0.8;
+                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+                    osc.connect(gain); gain.connect(audioContext.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(120, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.2);
+                    osc.frequency.setValueAtTime(150, audioContext.currentTime + 0.5);
+                    osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + dur);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime + 0.5);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
+                    osc.start(); osc.stop(audioContext.currentTime + dur);
+                }
+            }
+        };
+
+        const animalResponses = {
+            cat: [
+                { text: "Meow! 🐱", sound: 'meow', animation: 'bounce' },
+                { text: "Purrrrr 💕", sound: 'purr', animation: 'purr' },
+                { text: "Mrow! 😺", sound: 'meow', animation: 'bounce' },
+                { text: "Nyaa~ 🌸", sound: 'meow', animation: 'happy' },
+                { text: "Prrrp! 💗", sound: 'purr', animation: 'purr' },
+                { text: "Mew mew! 🎀", sound: 'meow', animation: 'bounce' },
+                { text: "*nuzzle* 💕", sound: 'purr', animation: 'happy' },
+            ],
+            goat: [
+                { text: "Baaaa! 🐐", sound: 'bleat', animation: 'bounce' },
+                { text: "Meeehh! 🌿", sound: 'bleat', animation: 'bounce' },
+                { text: "Baaa baaa! 💚", sound: 'bleat', animation: 'happy' },
+                { text: "*munch munch* 🌱", sound: 'bleat', animation: 'purr' },
+                { text: "Maaaa! 🐐", sound: 'bleat', animation: 'bounce' },
+                { text: "Beh-eh-eh! 💕", sound: 'bleat', animation: 'happy' },
+            ],
+            dog: [
+                { text: "Woof! 🐶", sound: 'bark', animation: 'bounce' },
+                { text: "Arf arf! 🦴", sound: 'bark', animation: 'bounce' },
+                { text: "Bork! 💕", sound: 'bark', animation: 'happy' },
+                { text: "*tail wag* 🐕", sound: 'woof', animation: 'happy' },
+                { text: "Ruff! 🎾", sound: 'bark', animation: 'bounce' },
+                { text: "*licks you* 💗", sound: 'woof', animation: 'happy' },
+            ],
+            cow: [
+                { text: "Mooo! 🐮", sound: 'moo', animation: 'bounce' },
+                { text: "Moooo~ 🌾", sound: 'moo', animation: 'bounce' },
+                { text: "*happy moo* 💚", sound: 'moo', animation: 'happy' },
+                { text: "Moo moo! 🥛", sound: 'moo', animation: 'bounce' },
+                { text: "Muuuu! 💕", sound: 'moo', animation: 'happy' },
+            ]
+        };
+
+        const printEmojis = { cat: '🐾', goat: '🐐', dog: '🐾', cow: '🐄' };
+        const heartEmojis = ['💕', '💗', '💖', '❤️', '🧡', '💚'];
+
+        let currentAnimal = 'cat', lastResponseIndex = -1, isAnimating = false, hasInteracted = false;
+
+        const animalContainer = document.getElementById('animalContainer');
+        const speechBubble = document.getElementById('speechBubble');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const tapHint = document.getElementById('tapHint');
+        const characterBtns = document.querySelectorAll('.character-btn');
+
+        function switchAnimal(animal) {
+            if (animal === currentAnimal) return;
+            currentAnimal = animal;
+            lastResponseIndex = -1;
+            characterBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.animal === animal));
+            document.querySelectorAll('.animal-svg').forEach(svg => svg.classList.remove('active'));
+            document.getElementById(`${animal}-svg`).classList.add('active');
+            speechBubble.classList.remove('visible');
+            const responses = animalResponses[animal];
+            const response = responses[0];
+            playSound(animal, response.sound);
+            setTimeout(() => {
+                speechBubble.textContent = response.text;
+                speechBubble.classList.add('visible');
+                setTimeout(() => speechBubble.classList.remove('visible'), 2000);
+            }, 100);
+        }
+
+        function playSound(animal, soundType) {
+            const animalSounds = sounds[animal];
+            if (animalSounds && animalSounds[soundType]) animalSounds[soundType]();
+            else if (animalSounds) Object.values(animalSounds)[0]?.();
+        }
+
+        function randomBlink() {
+            if (!isAnimating) {
+                animalContainer.classList.add('blinking');
+                setTimeout(() => animalContainer.classList.remove('blinking'), 150);
+            }
+            setTimeout(randomBlink, 2000 + Math.random() * 3000);
+        }
+        randomBlink();
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = (Math.random() * 100 - 50) + 'px';
+            heartsContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
+        }
+
+        function createPrint(x, y) {
+            const print = document.createElement('div');
+            print.className = 'print';
+            print.textContent = printEmojis[currentAnimal];
+            print.style.left = x + 'px';
+            print.style.top = y + 'px';
+            document.body.appendChild(print);
+            setTimeout(() => print.remove(), 1000);
+        }
+
+        function handleAnimalTap(event) {
+            if (isAnimating) return;
+            if (!hasInteracted) { hasInteracted = true; tapHint.classList.add('hidden'); }
+            const touch = event.touches ? event.touches[0] : event;
+            createPrint(touch.clientX - 20, touch.clientY - 20);
+            isAnimating = true;
+            const responses = animalResponses[currentAnimal];
+            let responseIndex;
+            do { responseIndex = Math.floor(Math.random() * responses.length); } while (responseIndex === lastResponseIndex && responses.length > 1);
+            lastResponseIndex = responseIndex;
+            const response = responses[responseIndex];
+            playSound(currentAnimal, response.sound);
+            speechBubble.textContent = response.text;
+            speechBubble.classList.add('visible');
+            animalContainer.classList.remove('bounce', 'purring', 'happy', 'ears-wiggle');
+            void animalContainer.offsetWidth;
+            if (response.animation === 'bounce') animalContainer.classList.add('bounce', 'ears-wiggle');
+            else if (response.animation === 'purr') animalContainer.classList.add('purring');
+            else if (response.animation === 'happy') animalContainer.classList.add('happy', 'ears-wiggle');
+            for (let i = 0; i < 3; i++) setTimeout(() => createHeart(), i * 150);
+            setTimeout(() => {
+                speechBubble.classList.remove('visible');
+                animalContainer.classList.remove('bounce', 'purring', 'happy', 'ears-wiggle');
+                isAnimating = false;
+            }, 2000);
+        }
+
+        characterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); switchAnimal(btn.dataset.animal); });
+            btn.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
+        });
+
+        animalContainer.addEventListener('click', handleAnimalTap);
+        animalContainer.addEventListener('touchstart', (e) => { e.preventDefault(); handleAnimalTap(e); }, { passive: false });
+
+        document.body.addEventListener('click', (e) => {
+            if (!e.target.closest('.character-switcher') && (e.target === document.body || e.target.closest('.flowers') || e.target.closest('.sun') || e.target.closest('.cloud'))) {
+                handleAnimalTap(e);
+            }
+        });
+
+        document.addEventListener('touchstart', initAudio, { once: true });
+        document.addEventListener('click', initAudio, { once: true });
+
+        setTimeout(() => {
+            speechBubble.textContent = "Hi! Tap me! 👋";
+            speechBubble.classList.add('visible');
+            setTimeout(() => { if (!hasInteracted) speechBubble.classList.remove('visible'); }, 3000);
+        }, 1000);
+    </script>
+</body>
+</html>
