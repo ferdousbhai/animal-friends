@@ -1097,6 +1097,7 @@
 
         function switchAnimal(animal) {
             if (animal === currentAnimal) return;
+            if ('vibrate' in navigator) navigator.vibrate(30); // Quick vibration on switch
             currentAnimal = animal;
             lastResponseIndex = -1;
             characterBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.animal === animal));
@@ -1147,9 +1148,17 @@
             setTimeout(() => print.remove(), 1000);
         }
 
+        // Haptic feedback helper
+        function vibrate(pattern) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(pattern);
+            }
+        }
+
         function handleAnimalTap(event) {
             if (isAnimating) return;
             if (!hasInteracted) { hasInteracted = true; tapHint.classList.add('hidden'); }
+            vibrate(50); // Short vibration on tap
             const touch = event.touches ? event.touches[0] : event;
             createPrint(touch.clientX - 20, touch.clientY - 20);
             isAnimating = true;
