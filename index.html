@@ -35,6 +35,13 @@
             --flower-purple: #B19CD9;
         }
 
+        body.night-mode {
+            --sky-top: #1a1a2e;
+            --sky-bottom: #16213e;
+            --grass: #2d5016;
+            --grass-dark: #1e3a0f;
+        }
+
         html, body {
             height: 100%;
             overflow: hidden;
@@ -63,7 +70,85 @@
             border-radius: 50%;
             box-shadow: 0 0 40px var(--sun-yellow), 0 0 80px rgba(255, 217, 61, 0.5);
             animation: sunPulse 3s ease-in-out infinite;
+            transition: opacity 0.5s, transform 0.5s;
         }
+
+        body.night-mode .sun { opacity: 0; transform: scale(0); }
+
+        .moon {
+            position: absolute;
+            top: 5%;
+            right: 10%;
+            width: 70px;
+            height: 70px;
+            background: #F5F5DC;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(245, 245, 220, 0.6), 0 0 60px rgba(245, 245, 220, 0.3);
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle at 30% 30%, #E8E8D0 0%, transparent 50%);
+            border-radius: 50%;
+        }
+
+        body.night-mode .moon { opacity: 1; transform: scale(1); }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        body.night-mode .stars { opacity: 1; }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .day-night-toggle {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .day-night-toggle:active { transform: scale(0.9); }
 
         @keyframes sunPulse {
             0%, 100% { transform: scale(1); }
@@ -399,7 +484,10 @@
     </style>
 </head>
 <body>
+    <button class="day-night-toggle" id="dayNightToggle">☀️</button>
     <div class="sun"></div>
+    <div class="moon"></div>
+    <div class="stars" id="stars"></div>
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
     
@@ -1205,6 +1293,30 @@
             speechBubble.classList.add('visible');
             setTimeout(() => { if (!hasInteracted) speechBubble.classList.remove('visible'); }, 3000);
         }, 1000);
+
+        // Day/Night toggle
+        const dayNightToggle = document.getElementById('dayNightToggle');
+        const starsContainer = document.getElementById('stars');
+        let isNightMode = false;
+
+        // Create stars
+        for (let i = 0; i < 30; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            star.style.width = (2 + Math.random() * 3) + 'px';
+            star.style.height = star.style.width;
+            starsContainer.appendChild(star);
+        }
+
+        dayNightToggle.addEventListener('click', () => {
+            if ('vibrate' in navigator) navigator.vibrate(30);
+            isNightMode = !isNightMode;
+            document.body.classList.toggle('night-mode', isNightMode);
+            dayNightToggle.textContent = isNightMode ? '🌙' : '☀️';
+        });
 
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
