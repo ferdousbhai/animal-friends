@@ -930,22 +930,48 @@
             goat: 'sounds/goat-bleat.mp3'
         };
 
-        // Pre-load audio elements for instant playback
+        // Audio elements storage
         const audioElements = {};
+        let audioUnlocked = false;
+
+        // Pre-load audio elements
         Object.entries(soundFiles).forEach(([animal, src]) => {
-            const audio = new Audio(src);
+            const audio = new Audio();
             audio.preload = 'auto';
+            audio.src = src;
             audioElements[animal] = audio;
         });
 
-        // Play sound with clone for overlapping support
+        // Unlock audio on first user interaction (required for iOS/mobile)
+        function unlockAudio() {
+            if (audioUnlocked) return;
+
+            // Play and immediately pause all audio to unlock
+            Object.values(audioElements).forEach(audio => {
+                audio.play().then(() => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }).catch(() => {});
+            });
+
+            audioUnlocked = true;
+            document.removeEventListener('touchstart', unlockAudio);
+            document.removeEventListener('click', unlockAudio);
+        }
+
+        document.addEventListener('touchstart', unlockAudio, { once: true });
+        document.addEventListener('click', unlockAudio, { once: true });
+
+        // Play sound function
         function playAnimalSound(animal) {
             const audio = audioElements[animal];
             if (audio) {
-                // Clone for overlapping playback support
-                const clone = audio.cloneNode();
-                clone.volume = 0.7;
-                clone.play().catch(() => {});
+                // Reset and play
+                audio.currentTime = 0;
+                audio.volume = 0.8;
+                audio.play().catch(err => {
+                    console.log('Audio play failed:', err);
+                });
             }
         }
 
@@ -1196,9 +1222,6 @@
                 handleAnimalTap(e);
             }
         });
-
-        document.addEventListener('touchstart', initAudio, { once: true });
-        document.addEventListener('click', initAudio, { once: true });
 
         setTimeout(() => {
             speechBubble.textContent = "Hi! Tap me! 👋";
