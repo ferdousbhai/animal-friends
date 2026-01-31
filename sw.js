@@ -1,8 +1,17 @@
-const CACHE_NAME = 'animal-friends-v1';
+const CACHE_NAME = 'animal-friends-v2';
 const urlsToCache = [
   '/animal-friends/',
   '/animal-friends/index.html',
-  '/animal-friends/manifest.json'
+  '/animal-friends/manifest.json',
+  '/animal-friends/sounds/cat-meow.mp3',
+  '/animal-friends/sounds/dog-bark.mp3',
+  '/animal-friends/sounds/cow-moo.mp3',
+  '/animal-friends/sounds/pig-oink.mp3',
+  '/animal-friends/sounds/sheep-baa.mp3',
+  '/animal-friends/sounds/duck-quack.mp3',
+  '/animal-friends/sounds/horse-neigh.mp3',
+  '/animal-friends/sounds/chicken-cluck.mp3',
+  '/animal-friends/sounds/goat-bleat.mp3'
 ];
 
 // Install service worker and cache resources

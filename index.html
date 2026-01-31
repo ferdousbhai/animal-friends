@@ -917,216 +917,49 @@
     <div class="tap-hint" id="tapHint">👆 Tap the animal!</div>
 
     <script>
-        let audioContext;
-        function initAudio() {
-            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioContext.state === 'suspended') audioContext.resume();
+        // Real animal sound files
+        const soundFiles = {
+            cat: 'sounds/cat-meow.mp3',
+            dog: 'sounds/dog-bark.mp3',
+            cow: 'sounds/cow-moo.mp3',
+            pig: 'sounds/pig-oink.mp3',
+            sheep: 'sounds/sheep-baa.mp3',
+            duck: 'sounds/duck-quack.mp3',
+            horse: 'sounds/horse-neigh.mp3',
+            chicken: 'sounds/chicken-cluck.mp3',
+            goat: 'sounds/goat-bleat.mp3'
+        };
+
+        // Pre-load audio elements for instant playback
+        const audioElements = {};
+        Object.entries(soundFiles).forEach(([animal, src]) => {
+            const audio = new Audio(src);
+            audio.preload = 'auto';
+            audioElements[animal] = audio;
+        });
+
+        // Play sound with clone for overlapping support
+        function playAnimalSound(animal) {
+            const audio = audioElements[animal];
+            if (audio) {
+                // Clone for overlapping playback support
+                const clone = audio.cloneNode();
+                clone.volume = 0.7;
+                clone.play().catch(() => {});
+            }
         }
 
+        // Legacy sound mapping for response compatibility
         const sounds = {
-            cat: {
-                meow: () => {
-                    initAudio();
-                    const dur = 0.3 + Math.random() * 0.2, freq = 600 + Math.random() * 200;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, audioContext.currentTime + dur * 0.3);
-                    osc.frequency.exponentialRampToValueAtTime(freq * 0.8, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                },
-                purr: () => {
-                    initAudio();
-                    const dur = 0.8;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
-                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sine'; osc.frequency.setValueAtTime(80, audioContext.currentTime);
-                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(25, audioContext.currentTime);
-                    lfoGain.gain.setValueAtTime(20, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
-                }
-            },
-            goat: {
-                bleat: () => {
-                    initAudio();
-                    const dur = 0.5;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
-                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(350, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.1);
-                    osc.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + dur);
-                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(30, audioContext.currentTime);
-                    lfoGain.gain.setValueAtTime(40, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
-                }
-            },
-            dog: {
-                bark: () => {
-                    initAudio();
-                    const dur = 0.25;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(200, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + 0.05);
-                    osc.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                },
-                woof: () => {
-                    initAudio();
-                    const dur = 0.4;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(150, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                }
-            },
-            cow: {
-                moo: () => {
-                    initAudio();
-                    const dur = 0.8;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(120, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.2);
-                    osc.frequency.setValueAtTime(150, audioContext.currentTime + 0.5);
-                    osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime + 0.5);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                }
-            },
-            pig: {
-                oink: () => {
-                    initAudio();
-                    const dur = 0.3;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(200, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + 0.1);
-                    osc.frequency.exponentialRampToValueAtTime(180, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                },
-                snort: () => {
-                    initAudio();
-                    const dur = 0.4;
-                    const noise = audioContext.createOscillator(), gain = audioContext.createGain();
-                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
-                    lfo.connect(lfoGain); lfoGain.connect(noise.frequency);
-                    noise.connect(gain); gain.connect(audioContext.destination);
-                    noise.type = 'sawtooth';
-                    noise.frequency.setValueAtTime(100, audioContext.currentTime);
-                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(40, audioContext.currentTime);
-                    lfoGain.gain.setValueAtTime(50, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    noise.start(); lfo.start(); noise.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
-                }
-            },
-            sheep: {
-                baa: () => {
-                    initAudio();
-                    const dur = 0.6;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
-                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(300, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.15);
-                    osc.frequency.exponentialRampToValueAtTime(280, audioContext.currentTime + dur);
-                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(25, audioContext.currentTime);
-                    lfoGain.gain.setValueAtTime(30, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.22, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
-                }
-            },
-            duck: {
-                quack: () => {
-                    initAudio();
-                    const dur = 0.2;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(800, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                }
-            },
-            horse: {
-                neigh: () => {
-                    initAudio();
-                    const dur = 0.7;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    const lfo = audioContext.createOscillator(), lfoGain = audioContext.createGain();
-                    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(400, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.2);
-                    osc.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + dur);
-                    lfo.type = 'sine'; lfo.frequency.setValueAtTime(15, audioContext.currentTime);
-                    lfoGain.gain.setValueAtTime(80, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); lfo.start(); osc.stop(audioContext.currentTime + dur); lfo.stop(audioContext.currentTime + dur);
-                }
-            },
-            chicken: {
-                cluck: () => {
-                    initAudio();
-                    const dur = 0.15;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(600, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                },
-                cockadoodle: () => {
-                    initAudio();
-                    const dur = 0.8;
-                    const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-                    osc.connect(gain); gain.connect(audioContext.destination);
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(400, audioContext.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.2);
-                    osc.frequency.setValueAtTime(700, audioContext.currentTime + 0.4);
-                    osc.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + dur);
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.setValueAtTime(0.25, audioContext.currentTime + 0.2);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + dur);
-                    osc.start(); osc.stop(audioContext.currentTime + dur);
-                }
-            }
+            cat: { meow: () => playAnimalSound('cat'), purr: () => playAnimalSound('cat') },
+            goat: { bleat: () => playAnimalSound('goat') },
+            dog: { bark: () => playAnimalSound('dog'), woof: () => playAnimalSound('dog') },
+            cow: { moo: () => playAnimalSound('cow') },
+            pig: { oink: () => playAnimalSound('pig'), snort: () => playAnimalSound('pig') },
+            sheep: { baa: () => playAnimalSound('sheep') },
+            duck: { quack: () => playAnimalSound('duck') },
+            horse: { neigh: () => playAnimalSound('horse') },
+            chicken: { cluck: () => playAnimalSound('chicken'), cockadoodle: () => playAnimalSound('chicken') }
         };
 
         const animalResponses = {
